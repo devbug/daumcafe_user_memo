@@ -30,8 +30,8 @@ function onGot(result) {
 			var memo = daumcafe_usermemo.filter(item => {
 				return item.encuserid === user_info[2];
 			});
-			var enc_userid = escapeHTML(user_info[2]);
-			var username = escapeHTML(user_info[3]);
+			var enc_userid = user_info[2];
+			var username = user_info[3];
 			var memo_str = "";
 			if (memo && memo.length > 0) {
 				memo_str = escapeHTML(memo[0].memo);
@@ -78,8 +78,8 @@ function onGot(result) {
 			var memo = daumcafe_usermemo.filter(item => {
 				return item.encuserid === user_info[2];
 			});
-			var enc_userid = escapeHTML(user_info[2]);
-			var username = escapeHTML(user_info[3]);
+			var enc_userid = user_info[2];
+			var username = user_info[3];
 			var memo_str = "";
 			if (memo && memo.length > 0) {
 				memo_str = escapeHTML(memo[0].memo);
@@ -133,8 +133,8 @@ function onGot(result) {
 			var memo = daumcafe_usermemo.filter(item => {
 				return item.encuserid === user_info[2];
 			});
-			var enc_userid = escapeHTML(user_info[2]);
-			var username = escapeHTML(user_info[3]);
+			var enc_userid = user_info[2];
+			var username = user_info[3];
 			var memo_str = "";
 			if (memo && memo.length > 0) {
 				memo_str = escapeHTML(memo[0].memo);
@@ -181,9 +181,9 @@ function onGot(result) {
 		var nickname = null;
 		for (j = 0; j < member_form[i].length; j++) {
 			if (member_form[i][j].name === "enc_userid")
-				enc_userid = escapeHTML(member_form[i][j].value);
+				enc_userid = member_form[i][j].value;
 			else if (member_form[i][j].name === "nickname")
-				nickname = escapeHTML(member_form[i][j].value);
+				nickname = member_form[i][j].value;
 		}
 		var strong_nickname = null;
 		var strongs = member_form[i].getElementsByTagName('strong');
