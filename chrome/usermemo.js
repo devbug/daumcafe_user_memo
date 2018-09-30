@@ -32,7 +32,6 @@ function onGot(result) {
 			});
 			var enc_userid = escapeHTML(user_info[2]);
 			var username = escapeHTML(user_info[3]);
-			var memo_msg = "";
 			var memo_str = "";
 			if (memo && memo.length > 0) {
 				memo_str = escapeHTML(memo[0].memo);
@@ -81,7 +80,6 @@ function onGot(result) {
 			});
 			var enc_userid = escapeHTML(user_info[2]);
 			var username = escapeHTML(user_info[3]);
-			var memo_msg = "";
 			var memo_str = "";
 			if (memo && memo.length > 0) {
 				memo_str = escapeHTML(memo[0].memo);
@@ -137,7 +135,6 @@ function onGot(result) {
 			});
 			var enc_userid = escapeHTML(user_info[2]);
 			var username = escapeHTML(user_info[3]);
-			var memo_msg = "";
 			var memo_str = "";
 			if (memo && memo.length > 0) {
 				memo_str = escapeHTML(memo[0].memo);
@@ -200,7 +197,6 @@ function onGot(result) {
 			var memo = daumcafe_usermemo.filter(item => {
 				return item.encuserid === enc_userid;
 			});
-			var memo_msg = "";
 			var memo_str = "";
 			if (memo && memo.length > 0) {
 				memo_str = escapeHTML(memo[0].memo);
