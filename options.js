@@ -111,6 +111,10 @@ function removeButtonOnClick(e) {
 	}
 }
 
+function escapeHTML(str) {
+	return str.replace(/[&"'<>]/g, (m) => ({ "&": "&amp;", '"': "&quot;", "'": "&#39;", "<": "&lt;", ">": "&gt;" })[m]);
+}
+
 function restoreOptions() {
 
 	function onGot(result) {
@@ -130,10 +134,10 @@ function restoreOptions() {
 		for (i = 0; i < daumcafe_usermemo.length; i++) {
 			var username = decodeURIComponent(JSON.parse(`"${daumcafe_usermemo[i].username}"`));
 			html += "<tr>";
-			html += `<td class="username"><input class="readonly inputtext" type="text" id="username" value="${username}" readonly /></td>`;
-			html += `<td class="enc_userid"><input class="readonly inputtext" type="text" id="enc_userid" value="${daumcafe_usermemo[i].encuserid}" readonly /></td>`;
-			html += `<td class="memo"><input type="text" id="memo" value="${daumcafe_usermemo[i].memo}" /></td>`;
-			html += `<td><button id="delete_button" encuserid="${daumcafe_usermemo[i].encuserid}">X</button></td>`;
+			html += `<td class="username"><input class="readonly inputtext" type="text" id="username" value="${escapeHTML(username)}" readonly /></td>`;
+			html += `<td class="enc_userid"><input class="readonly inputtext" type="text" id="enc_userid" value="${escapeHTML(daumcafe_usermemo[i].encuserid)}" readonly /></td>`;
+			html += `<td class="memo"><input type="text" id="memo" value="${escapeHTML(daumcafe_usermemo[i].memo)}" /></td>`;
+			html += `<td><button id="delete_button" encuserid="${escapeHTML(daumcafe_usermemo[i].encuserid)}">X</button></td>`;
 			html += "</tr>";
 		}
 		tbody.innerHTML = html;

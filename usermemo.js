@@ -2,6 +2,10 @@ function onError(error) {
 	console.log(`Error: ${error}`);
 }
 
+function escapeHTML(str) {
+	return str.replace(/[&"'<>]/g, (m) => ({ "&": "&amp;", '"': "&quot;", "'": "&#39;", "<": "&lt;", ">": "&gt;" })[m]);
+}
+
 function onGot(result) {
 	var daumcafe_usermemo;
 	if (result instanceof Array) {
@@ -30,13 +34,15 @@ function onGot(result) {
 			var memo = daumcafe_usermemo.filter(item => {
 				return item.encuserid === user_info[2];
 			});
+			var enc_userid = escapeHTML(user_info[2]);
+			var username = escapeHTML(user_info[3]);
 			var memo_msg = "";
 			var memo_str = "";
 			if (memo && memo.length > 0) {
-				memo_str = memo[0].memo;
-				memo_msg = "<br />" + memo[0].memo + `&nbsp;<a encuserid="${user_info[2]}" username="${user_info[3]}" memo="${memo_str}" delete="true">[-]</a>`;
+				memo_str = escapeHTML(memo[0].memo);
+				memo_msg = "<br />" + memo_str + `&nbsp;<a encuserid="${enc_userid}" username="${username}" memo="${memo_str}" delete="true">[-]</a>`;
 			}
-			html = nicknames[i].innerHTML + `<span class="aggro_memo" style="font-size: 11px; color: #aa22ff;">&nbsp;<a encuserid="${user_info[2]}" username="${user_info[3]}" memo="${memo_str}" insert="true">[+]</a>${memo_msg}</span>`
+			html = nicknames[i].innerHTML + `<span class="aggro_memo" style="font-size: 11px; color: #aa22ff;">&nbsp;<a encuserid="${enc_userid}" username="${username}" memo="${memo_str}" insert="true">[+]</a>${memo_msg}</span>`
 			nicknames[i].innerHTML = html;
 		}
 	}
@@ -49,11 +55,13 @@ function onGot(result) {
 			var memo = daumcafe_usermemo.filter(item => {
 				return item.encuserid === user_info[2];
 			});
+			var enc_userid = escapeHTML(user_info[2]);
+			var username = escapeHTML(user_info[3]);
 			var memo_msg = "";
 			var memo_str = "";
 			if (memo && memo.length > 0) {
-				memo_str = memo[0].memo;
-				memo_msg = `<br class="aggro_memo" /><span class="aggro_memo" style="font-size: 11px; color: #aa22ff;"><span>${memo[0].memo}&nbsp;</span><a encuserid="${user_info[2]}" username="${user_info[3]}" memo="${memo_str}" delete="true">[-]</a></span>`;
+				memo_str = escapeHTML(memo[0].memo);
+				memo_msg = `<br class="aggro_memo" /><span class="aggro_memo" style="font-size: 11px; color: #aa22ff;"><span>${memo_str}&nbsp;</span><a encuserid="${enc_userid}" username="${username}" memo="${memo_str}" delete="true">[-]</a></span>`;
 				article_writers[i].innerHTML = article_writers[i].innerHTML + memo_msg;
 			}
 
@@ -61,7 +69,7 @@ function onGot(result) {
 			newMemo.classList.add("aggro_memo");
 			newMemo.style.fontSize = "11px";
 			newMemo.style.color = "#aa22ff";
-			newMemo.innerHTML = `<span>&nbsp;</span><a encuserid="${user_info[2]}" username="${user_info[3]}" memo="${memo_str}" insert="true">[+]</a>`;
+			newMemo.innerHTML = `<span>&nbsp;</span><a encuserid="${enc_userid}" username="${username}" memo="${memo_str}" insert="true">[+]</a>`;
 			article_writers[i].insertBefore(newMemo, article_writers[i].childNodes[2]);
 		}
 	}
@@ -74,18 +82,20 @@ function onGot(result) {
 			var memo = daumcafe_usermemo.filter(item => {
 				return item.encuserid === user_info[2];
 			});
+			var enc_userid = escapeHTML(user_info[2]);
+			var username = escapeHTML(user_info[3]);
 			var memo_msg = "";
 			var memo_str = "";
 			if (memo && memo.length > 0) {
-				memo_str = memo[0].memo;
-				memo_msg = `<span>&nbsp;${memo[0].memo}&nbsp;</span><a encuserid="${user_info[2]}" username="${user_info[3]}" memo="${memo_str}" delete="true">[-]</a>`;
+				memo_str = escapeHTML(memo[0].memo);
+				memo_msg = `<span>&nbsp;${memo_str}&nbsp;</span><a encuserid="${enc_userid}" username="${username}" memo="${memo_str}" delete="true">[-]</a>`;
 			}
 
 			var newMemo = document.createElement("SPAN");
 			newMemo.classList.add("aggro_memo");
 			newMemo.style.fontSize = "11px";
 			newMemo.style.color = "#aa22ff";
-			newMemo.innerHTML = `<span>&nbsp;</span><a encuserid="${user_info[2]}" username="${user_info[3]}" memo="${memo_str}" insert="true">[+]</a>${memo_msg}`;
+			newMemo.innerHTML = `<span>&nbsp;</span><a encuserid="${enc_userid}" username="${username}" memo="${memo_str}" insert="true">[+]</a>${memo_msg}`;
 			reply_names[i].insertBefore(newMemo, reply_names[i].childNodes[2]);
 		}
 	}
@@ -98,9 +108,9 @@ function onGot(result) {
 		var nickname = null;
 		for (j = 0; j < member_form[i].length; j++) {
 			if (member_form[i][j].name === "enc_userid")
-				enc_userid = member_form[i][j].value;
+				enc_userid = escapeHTML(member_form[i][j].value);
 			else if (member_form[i][j].name === "nickname")
-				nickname = member_form[i][j].value;
+				nickname = escapeHTML(member_form[i][j].value);
 		}
 		var strong_nickname = null;
 		var strongs = member_form[i].getElementsByTagName('strong');
@@ -117,8 +127,8 @@ function onGot(result) {
 			var memo_msg = "";
 			var memo_str = "";
 			if (memo && memo.length > 0) {
-				memo_str = memo[0].memo;
-				memo_msg = `<span>&nbsp;${memo[0].memo}&nbsp;</span><a encuserid="${enc_userid}" username="${nickname}" memo="${memo_str}" delete="true">[-]</a>`;
+				memo_str = escapeHTML(memo[0].memo);
+				memo_msg = `<span>&nbsp;${memo_str}&nbsp;</span><a encuserid="${enc_userid}" username="${nickname}" memo="${memo_str}" delete="true">[-]</a>`;
 			}
 
 			var newMemo = document.createElement("SPAN");
