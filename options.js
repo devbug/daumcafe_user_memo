@@ -131,16 +131,57 @@ function restoreOptions() {
 		var i;
 		var html = "";
 		var tbody = document.querySelector("#user_memos");
+		while (tbody.firstChild) {
+			tbody.removeChild(tbody.firstChild);
+		}
+
 		for (i = 0; i < daumcafe_usermemo.length; i++) {
 			var username = decodeURIComponent(JSON.parse(`"${daumcafe_usermemo[i].username}"`));
-			html += "<tr>";
-			html += `<td class="username"><input class="readonly inputtext" type="text" id="username" value="${escapeHTML(username)}" readonly /></td>`;
-			html += `<td class="enc_userid"><input class="readonly inputtext" type="text" id="enc_userid" value="${escapeHTML(daumcafe_usermemo[i].encuserid)}" readonly /></td>`;
-			html += `<td class="memo"><input type="text" id="memo" value="${escapeHTML(daumcafe_usermemo[i].memo)}" /></td>`;
-			html += `<td><button id="delete_button" encuserid="${escapeHTML(daumcafe_usermemo[i].encuserid)}">X</button></td>`;
-			html += "</tr>";
+			var username_input = document.createElement('input');
+			username_input.classList.add("readonly");
+			username_input.classList.add("inputtext");
+			username_input.type = "text";
+			username_input.id = "username";
+			username_input.value = escapeHTML(username);
+			username_input.readOnly = true;
+			var username_td = document.createElement('td');
+			username_td.classList.add("username");
+			username_td.appendChild(username_input);
+
+			var enc_userid_input = document.createElement('input');
+			enc_userid_input.classList.add("readonly");
+			enc_userid_input.classList.add("inputtext");
+			enc_userid_input.type = "text";
+			enc_userid_input.id = "enc_userid";
+			enc_userid_input.value = escapeHTML(daumcafe_usermemo[i].encuserid);
+			enc_userid_input.readOnly = true;
+			var enc_userid_td = document.createElement('td');
+			enc_userid_td.classList.add("enc_userid");
+			enc_userid_td.appendChild(enc_userid_input);
+
+			var memo_input = document.createElement('input');
+			memo_input.type = "text";
+			memo_input.id = "memo";
+			memo_input.value = escapeHTML(daumcafe_usermemo[i].memo);
+			var memo_td = document.createElement('td');
+			memo_td.classList.add("memo");
+			memo_td.appendChild(memo_input);
+
+			var delete_button_input = document.createElement('button');
+			delete_button_input.id = "delete_button";
+			delete_button_input.setAttribute("encuserid", escapeHTML(daumcafe_usermemo[i].encuserid));
+			delete_button_input.innerText = "X";
+			var delete_button_td = document.createElement('td');
+			delete_button_td.appendChild(delete_button_input);
+
+			var tr = document.createElement('tr');
+			tr.appendChild(username_td);
+			tr.appendChild(enc_userid_td);
+			tr.appendChild(memo_td);
+			tr.appendChild(delete_button_td);
+
+			tbody.appendChild(tr);
 		}
-		tbody.innerHTML = html;
 	}
 
 	function onError(error) {

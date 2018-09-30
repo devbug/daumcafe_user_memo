@@ -40,10 +40,38 @@ function onGot(result) {
 			var memo_str = "";
 			if (memo && memo.length > 0) {
 				memo_str = escapeHTML(memo[0].memo);
-				memo_msg = "<br />" + memo_str + `&nbsp;<a encuserid="${enc_userid}" username="${username}" memo="${memo_str}" delete="true">[-]</a>`;
 			}
-			html = nicknames[i].innerHTML + `<span class="aggro_memo" style="font-size: 11px; color: #aa22ff;">&nbsp;<a encuserid="${enc_userid}" username="${username}" memo="${memo_str}" insert="true">[+]</a>${memo_msg}</span>`
-			nicknames[i].innerHTML = html;
+
+			var insert_a = document.createElement("a");
+			insert_a.setAttribute("encuserid", enc_userid);
+			insert_a.setAttribute("username", username);
+			insert_a.setAttribute("memo", memo_str);
+			insert_a.setAttribute("insert", "true");
+			insert_a.style.marginLeft = "5px";
+			insert_a.innerText = "[+]";
+
+			var newMemo = document.createElement("SPAN");
+			newMemo.classList.add("aggro_memo");
+			newMemo.style.fontSize = "11px";
+			newMemo.style.color = "#aa22ff";
+			newMemo.appendChild(insert_a);
+
+			if (memo_str !== "") {
+				var br = document.createElement("br");
+				var memo_span = document.createElement("span");
+				memo_span.innerText = `${memo_str} `;
+				var delete_a = document.createElement("a");
+				delete_a.setAttribute("encuserid", enc_userid);
+				delete_a.setAttribute("username", username);
+				delete_a.setAttribute("memo", memo_str);
+				delete_a.setAttribute("delete", "true");
+				delete_a.innerText = "[-]";
+				newMemo.appendChild(br);
+				newMemo.appendChild(memo_span);
+				newMemo.appendChild(delete_a);
+			}
+
+			nicknames[i].appendChild(newMemo);
 		}
 	}
 
@@ -61,15 +89,44 @@ function onGot(result) {
 			var memo_str = "";
 			if (memo && memo.length > 0) {
 				memo_str = escapeHTML(memo[0].memo);
-				memo_msg = `<br class="aggro_memo" /><span class="aggro_memo" style="font-size: 11px; color: #aa22ff;"><span>${memo_str}&nbsp;</span><a encuserid="${enc_userid}" username="${username}" memo="${memo_str}" delete="true">[-]</a></span>`;
-				article_writers[i].innerHTML = article_writers[i].innerHTML + memo_msg;
+
+				var br = document.createElement("br");
+				br.classList.add("aggro_memo");
+				var aggro_memo = document.createElement("span");
+				aggro_memo.classList.add("aggro_memo");
+				aggro_memo.style.fontSize = "11px";
+				aggro_memo.style.color = "#aa22ff";
+
+				var memo_span = document.createElement("span");
+				memo_span.innerText = `${memo_str}`;
+				var delete_a = document.createElement("a");
+				delete_a.setAttribute("encuserid", enc_userid);
+				delete_a.setAttribute("username", username);
+				delete_a.setAttribute("memo", memo_str);
+				delete_a.setAttribute("delete", "true");
+				delete_a.style.marginLeft = "5px";
+				delete_a.innerText = "[-]";
+				aggro_memo.appendChild(memo_span);
+				aggro_memo.appendChild(delete_a);
+
+				article_writers[i].appendChild(br);
+				article_writers[i].appendChild(aggro_memo);
 			}
+
+			var insert_a = document.createElement("a");
+			insert_a.setAttribute("encuserid", enc_userid);
+			insert_a.setAttribute("username", username);
+			insert_a.setAttribute("memo", memo_str);
+			insert_a.setAttribute("insert", "true");
+			insert_a.style.marginLeft = "5px";
+			insert_a.innerText = "[+]";
 
 			var newMemo = document.createElement("SPAN");
 			newMemo.classList.add("aggro_memo");
 			newMemo.style.fontSize = "11px";
 			newMemo.style.color = "#aa22ff";
-			newMemo.innerHTML = `<span>&nbsp;</span><a encuserid="${enc_userid}" username="${username}" memo="${memo_str}" insert="true">[+]</a>`;
+			newMemo.appendChild(insert_a);
+
 			article_writers[i].insertBefore(newMemo, article_writers[i].childNodes[2]);
 		}
 	}
@@ -88,14 +145,37 @@ function onGot(result) {
 			var memo_str = "";
 			if (memo && memo.length > 0) {
 				memo_str = escapeHTML(memo[0].memo);
-				memo_msg = `<span>&nbsp;${memo_str}&nbsp;</span><a encuserid="${enc_userid}" username="${username}" memo="${memo_str}" delete="true">[-]</a>`;
 			}
+
+			var null_span = document.createElement("span");
+			null_span.innerText = " ";
+			var insert_a = document.createElement("a");
+			insert_a.setAttribute("encuserid", enc_userid);
+			insert_a.setAttribute("username", username);
+			insert_a.setAttribute("memo", memo_str);
+			insert_a.setAttribute("insert", "true");
+			insert_a.innerText = "[+]";
 
 			var newMemo = document.createElement("SPAN");
 			newMemo.classList.add("aggro_memo");
 			newMemo.style.fontSize = "11px";
 			newMemo.style.color = "#aa22ff";
-			newMemo.innerHTML = `<span>&nbsp;</span><a encuserid="${enc_userid}" username="${username}" memo="${memo_str}" insert="true">[+]</a>${memo_msg}`;
+			newMemo.appendChild(null_span);
+			newMemo.appendChild(insert_a);
+
+			if (memo_str !== "") {
+				var memo_span = document.createElement("span");
+				memo_span.innerText = ` ${memo_str} `;
+				var delete_a = document.createElement("a");
+				delete_a.setAttribute("encuserid", enc_userid);
+				delete_a.setAttribute("username", username);
+				delete_a.setAttribute("memo", memo_str);
+				delete_a.setAttribute("delete", "true");
+				delete_a.innerText = "[-]";
+				newMemo.appendChild(memo_span);
+				newMemo.appendChild(delete_a);
+			}
+
 			reply_names[i].insertBefore(newMemo, reply_names[i].childNodes[2]);
 		}
 	}
@@ -128,14 +208,37 @@ function onGot(result) {
 			var memo_str = "";
 			if (memo && memo.length > 0) {
 				memo_str = escapeHTML(memo[0].memo);
-				memo_msg = `<span>&nbsp;${memo_str}&nbsp;</span><a encuserid="${enc_userid}" username="${nickname}" memo="${memo_str}" delete="true">[-]</a>`;
 			}
+
+			var null_span = document.createElement("span");
+			null_span.innerText = " ";
+			var insert_a = document.createElement("a");
+			insert_a.setAttribute("encuserid", enc_userid);
+			insert_a.setAttribute("username", nickname);
+			insert_a.setAttribute("memo", memo_str);
+			insert_a.setAttribute("insert", "true");
+			insert_a.innerText = "[+]";
 
 			var newMemo = document.createElement("SPAN");
 			newMemo.classList.add("aggro_memo");
 			newMemo.style.fontSize = "11px";
 			newMemo.style.color = "#aa22ff";
-			newMemo.innerHTML = `<span>&nbsp;</span><a encuserid="${enc_userid}" username="${nickname}" memo="${memo_str}" insert="true">[+]</a>${memo_msg}`;
+			newMemo.appendChild(null_span);
+			newMemo.appendChild(insert_a);
+
+			if (memo_str !== "") {
+				var memo_span = document.createElement("span");
+				memo_span.innerText = ` ${memo_str} `;
+				var delete_a = document.createElement("a");
+				delete_a.setAttribute("encuserid", enc_userid);
+				delete_a.setAttribute("username", nickname);
+				delete_a.setAttribute("memo", memo_str);
+				delete_a.setAttribute("delete", "true");
+				delete_a.innerText = "[-]";
+				newMemo.appendChild(memo_span);
+				newMemo.appendChild(delete_a);
+			}
+
 			strong_nickname.parentNode.appendChild(newMemo);
 		}
 	}
