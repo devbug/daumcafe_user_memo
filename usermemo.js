@@ -26,7 +26,7 @@ function onGot(result) {
 	var nicknames = document.getElementsByClassName("nick");
 	for (i = 0; i < nicknames.length; i++) {
 		var user_info = nicknames[i].innerHTML.match(re);
-		if (user_info.length === 4) {
+		if (user_info && user_info.length === 4) {
 			var memo = daumcafe_usermemo.filter(item => {
 				return item.encuserid === user_info[2];
 			});
@@ -45,7 +45,7 @@ function onGot(result) {
 	var article_writers = document.getElementsByClassName("article_writer");
 	for (i = 0; i < article_writers.length; i++) {
 		var user_info = article_writers[i].innerHTML.match(re);
-		if (user_info.length === 4) {
+		if (user_info && user_info.length === 4) {
 			var memo = daumcafe_usermemo.filter(item => {
 				return item.encuserid === user_info[2];
 			});
@@ -70,7 +70,7 @@ function onGot(result) {
 	var reply_names = document.getElementsByClassName("id_admin");
 	for (i = 0; i < reply_names.length; i++) {
 		var user_info = reply_names[i].innerHTML.match(re);
-		if (user_info.length === 4) {
+		if (user_info && user_info.length === 4) {
 			var memo = daumcafe_usermemo.filter(item => {
 				return item.encuserid === user_info[2];
 			});
