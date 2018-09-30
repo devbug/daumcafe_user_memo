@@ -91,47 +91,44 @@ function onGot(result) {
 	}
 
 	// 작성 글 보기
-	// var member_form = document.getElementsByClassName("member_article_search_form");
-	// console.log(`${member_form.length}`);
-	// for (i = 0; i < member_form.length; i++) {
-	// 	var j;
-	// 	var enc_userid = null;
-	// 	var nickname = null;
-	// 	for (j = 0; j < member_form[i].length; j++) {
-	// 		if (member_form[i][j].name === "enc_userid")
-	// 			enc_userid = member_form[i][j].value;
-	// 		else if (member_form[i][j].name === "nickname")
-	// 			nickname = member_form[i][j].value;
-	// 	}
-	// 	console.log(`${enc_userid} ${nickname}`);
-	// 	var strong_nickname = null;
-	// 	var strongs = member_form[i].getElementsByTagName('strong');
-	// 	for (j = 0; j < strongs.length; j++) {
-	// 		if (strongs[j].id === 'nickname') {
-	// 			strong_nickname = strongs[j];
-	// 			break;
-	// 		}
-	// 	}
-	// 	console.log(strong_nickname);
-	// 	if (enc_userid !== null && nickname !== null && strong_nickname !== null) {
-	// 		var memo = daumcafe_usermemo.filter(item => {
-	// 			return item.encuserid === enc_userid;
-	// 		});
-	// 		var memo_msg = "";
-	// 		var memo_str = "";
-	// 		if (memo && memo.length > 0) {
-	// 			memo_str = memo[0].memo;
-	// 			memo_msg = `<span>&nbsp;${memo[0].memo}&nbsp;</span><a encuserid="${enc_userid}" username="${nickname}" memo="${memo_str}" delete="true">[-]</a>`;
-	// 		}
+	var member_form = document.getElementsByClassName("member_article_search_form");
+	for (i = 0; i < member_form.length; i++) {
+		var j;
+		var enc_userid = null;
+		var nickname = null;
+		for (j = 0; j < member_form[i].length; j++) {
+			if (member_form[i][j].name === "enc_userid")
+				enc_userid = member_form[i][j].value;
+			else if (member_form[i][j].name === "nickname")
+				nickname = member_form[i][j].value;
+		}
+		var strong_nickname = null;
+		var strongs = member_form[i].getElementsByTagName('strong');
+		for (j = 0; j < strongs.length; j++) {
+			if (strongs[j].id === 'nickname') {
+				strong_nickname = strongs[j];
+				break;
+			}
+		}
+		if (enc_userid !== null && nickname !== null && strong_nickname !== null) {
+			var memo = daumcafe_usermemo.filter(item => {
+				return item.encuserid === enc_userid;
+			});
+			var memo_msg = "";
+			var memo_str = "";
+			if (memo && memo.length > 0) {
+				memo_str = memo[0].memo;
+				memo_msg = `<span>&nbsp;${memo[0].memo}&nbsp;</span><a encuserid="${enc_userid}" username="${nickname}" memo="${memo_str}" delete="true">[-]</a>`;
+			}
 
-	// 		var newMemo = document.createElement("SPAN");
-	// 		newMemo.classList.add("aggro_memo");
-	// 		newMemo.style.fontSize = "11px";
-	// 		newMemo.style.color = "#aa22ff";
-	// 		newMemo.innerHTML = `<span>&nbsp;</span><a encuserid="${enc_userid}" username="${nickname}" memo="${memo_str}" insert="true">[+]</a>${memo_msg}`;
-	// 		strong_nickname.parentNode.appendChild(newMemo);
-	// 	}
-	// }
+			var newMemo = document.createElement("SPAN");
+			newMemo.classList.add("aggro_memo");
+			newMemo.style.fontSize = "11px";
+			newMemo.style.color = "#aa22ff";
+			newMemo.innerHTML = `<span>&nbsp;</span><a encuserid="${enc_userid}" username="${nickname}" memo="${memo_str}" insert="true">[+]</a>${memo_msg}`;
+			strong_nickname.parentNode.appendChild(newMemo);
+		}
+	}
 }
 
 function refreshAggroMemos() {
