@@ -135,7 +135,7 @@ function onGot(result) {
 }
 
 function refreshAggroMemos() {
-	browser.storage.local.get("daumcafe_usermemo").then(onGot, onError);
+	browser.storage.sync.get("daumcafe_usermemo").then(onGot, onError);
 }
 
 function onSave() {
@@ -159,7 +159,7 @@ function notifyExtension(e) {
 		if (memo !== null) {
 			// console.log(`${target.attributes['username'].value} (${target.attributes['encuserid'].value}) => ${memo}`);
 
-			browser.storage.local.get("daumcafe_usermemo").then(result => {
+			browser.storage.sync.get("daumcafe_usermemo").then(result => {
 				var memos;
 				if (result instanceof Array) {
 					memos = result[0];
@@ -179,14 +179,14 @@ function notifyExtension(e) {
 					'username': target.attributes['username'].value,
 					'memo': memo
 				});
-				browser.storage.local.set({ daumcafe_usermemo }).then(onSave, onError);
+				browser.storage.sync.set({ daumcafe_usermemo }).then(onSave, onError);
 			}, onError);
 		}
 	}
 	else if (target.hasAttribute('delete')) {
 		var remove = confirm('정말 메모를 삭제하시겠습니까?');
 		if (remove) {
-			browser.storage.local.get("daumcafe_usermemo").then(result => {
+			browser.storage.sync.get("daumcafe_usermemo").then(result => {
 				var memos;
 				if (result instanceof Array) {
 					memos = result[0];
@@ -200,7 +200,7 @@ function notifyExtension(e) {
 				var daumcafe_usermemo = memos.filter(item => {
 					return item.encuserid !== target.attributes['encuserid'].value;
 				});
-				browser.storage.local.set({ daumcafe_usermemo }).then(onSave, onError);
+				browser.storage.sync.set({ daumcafe_usermemo }).then(onSave, onError);
 			}, onError);
 		}
 	}

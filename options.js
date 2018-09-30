@@ -37,7 +37,7 @@ function saveOptions(e) {
 		}
 	}
 
-	browser.storage.local.set({ daumcafe_usermemo }).then(onSave, onError);
+	browser.storage.sync.set({ daumcafe_usermemo }).then(onSave, onError);
 }
 
 function removeMemo(enc_userid) {
@@ -51,7 +51,7 @@ function removeMemo(enc_userid) {
 			console.log(`Error: ${error}`);
 		}
 
-		browser.storage.local.get("daumcafe_usermemo").then(result => {
+		browser.storage.sync.get("daumcafe_usermemo").then(result => {
 			var memos;
 			if (result instanceof Array) {
 				memos = result[0];
@@ -65,7 +65,7 @@ function removeMemo(enc_userid) {
 			var daumcafe_usermemo = memos.filter(item => {
 				return item.encuserid !== enc_userid;
 			});
-			browser.storage.local.set({ daumcafe_usermemo }).then(onSave, onError);
+			browser.storage.sync.set({ daumcafe_usermemo }).then(onSave, onError);
 		}, onError);
 	}
 }
@@ -92,7 +92,7 @@ function removeButtonOnClick(e) {
 			console.log(`Error: ${error}`);
 		}
 
-		browser.storage.local.get("daumcafe_usermemo").then(result => {
+		browser.storage.sync.get("daumcafe_usermemo").then(result => {
 			var memos;
 			if (result instanceof Array) {
 				memos = result[0];
@@ -106,7 +106,7 @@ function removeButtonOnClick(e) {
 			var daumcafe_usermemo = memos.filter(item => {
 				return item.encuserid !== target.attributes['encuserid'].value;
 			});
-			browser.storage.local.set({ daumcafe_usermemo }).then(onSave, onError);
+			browser.storage.sync.set({ daumcafe_usermemo }).then(onSave, onError);
 		}, onError);
 	}
 }
@@ -143,7 +143,7 @@ function restoreOptions() {
 		console.log(`Error: ${error}`);
 	}
 
-	browser.storage.local.get("daumcafe_usermemo").then(onGot, onError);
+	browser.storage.sync.get("daumcafe_usermemo").then(onGot, onError);
 }
 
 document.addEventListener("DOMContentLoaded", restoreOptions);
