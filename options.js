@@ -7,10 +7,6 @@ function saveOptions(e) {
 		restoreOptions();
 	}
 
-	function onError(error) {
-		console.log(`Error: ${error}`);
-	}
-
 	var daumcafe_usermemo = [];
 	var i;
 	var userMemos = document.getElementById("user_memos");
@@ -37,7 +33,7 @@ function saveOptions(e) {
 		}
 	}
 
-	browser.storage.sync.set({ daumcafe_usermemo }).then(onSave, onError);
+	chrome.storage.sync.set({ "daumcafe_usermemo": daumcafe_usermemo }, onSave);
 }
 
 function removeMemo(enc_userid) {
@@ -47,11 +43,7 @@ function removeMemo(enc_userid) {
 			restoreOptions();
 		}
 
-		function onError(error) {
-			console.log(`Error: ${error}`);
-		}
-
-		browser.storage.sync.get("daumcafe_usermemo").then(result => {
+		chrome.storage.sync.get(["daumcafe_usermemo"], result => {
 			var memos;
 			if (result instanceof Array) {
 				memos = result[0];
@@ -65,8 +57,8 @@ function removeMemo(enc_userid) {
 			var daumcafe_usermemo = memos.filter(item => {
 				return item.encuserid !== enc_userid;
 			});
-			browser.storage.sync.set({ daumcafe_usermemo }).then(onSave, onError);
-		}, onError);
+			chrome.storage.sync.set({ "daumcafe_usermemo": daumcafe_usermemo }, onSave);
+		});
 	}
 }
 
@@ -88,11 +80,7 @@ function removeButtonOnClick(e) {
 			restoreOptions();
 		}
 
-		function onError(error) {
-			console.log(`Error: ${error}`);
-		}
-
-		browser.storage.sync.get("daumcafe_usermemo").then(result => {
+		chrome.storage.sync.get(["daumcafe_usermemo"], result => {
 			var memos;
 			if (result instanceof Array) {
 				memos = result[0];
@@ -106,8 +94,8 @@ function removeButtonOnClick(e) {
 			var daumcafe_usermemo = memos.filter(item => {
 				return item.encuserid !== target.attributes['encuserid'].value;
 			});
-			browser.storage.sync.set({ daumcafe_usermemo }).then(onSave, onError);
-		}, onError);
+			chrome.storage.sync.set({ "daumcafe_usermemo": daumcafe_usermemo }, onSave);
+		});
 	}
 }
 
@@ -184,11 +172,7 @@ function restoreOptions() {
 		}
 	}
 
-	function onError(error) {
-		console.log(`Error: ${error}`);
-	}
-
-	browser.storage.sync.get("daumcafe_usermemo").then(onGot, onError);
+	chrome.storage.sync.get(["daumcafe_usermemo"], onGot);
 }
 
 document.addEventListener("DOMContentLoaded", restoreOptions);
