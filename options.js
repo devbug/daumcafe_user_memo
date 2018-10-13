@@ -227,7 +227,7 @@ function restoreOptions() {
 			var timestamp_td = document.createElement('td');
 			timestamp_td.classList.add("block");
 			timestamp_td.classList.add("timestamp");
-			timestamp_td.innerText = escapeHTML(new Date(parseInt(daumcafe_blockeduser[i].timestamp)).toUTCString());
+			timestamp_td.innerText = escapeHTML(new Date(daumcafe_blockeduser[i].timestamp).toLocaleString());
 
 			var reason_td = document.createElement('td');
 			reason_td.classList.add("block");

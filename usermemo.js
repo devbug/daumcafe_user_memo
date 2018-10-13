@@ -513,7 +513,7 @@ function notifyExtension(e) {
 						'encuserid': target.attributes['encuserid'].value,
 						'username': target.attributes['username'].value,
 						'reason': reason,
-						'timestamp': + new Date()
+						'timestamp': new Date().toISOString()
 					});
 					chrome.storage.sync.set({ "daumcafe_blockeduser": daumcafe_blockeduser }, onBlockSave);
 				}
