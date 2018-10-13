@@ -195,6 +195,15 @@ function restoreOptions() {
 		}
 	}
 
+	function toLocaleStringSupportsLocales() {
+		try {
+			new Date().toLocaleString('i');
+		} catch (e) {
+			return e instanceof RangeError;
+		}
+		return false;
+	}
+
 	function onBlocksGot(result) {
 		var daumcafe_blockeduser;
 		if (result instanceof Array) {
@@ -212,6 +221,13 @@ function restoreOptions() {
 			tbody.removeChild(tbody.firstChild);
 		}
 
+		var language;
+		if (window.navigator.languages) {
+			language = window.navigator.languages[0];
+		} else {
+			language = window.navigator.userLanguage || window.navigator.language;
+		}
+
 		for (i = 0; i < daumcafe_blockeduser.length; i++) {
 			var username = decodeURIComponent(JSON.parse(`"${daumcafe_blockeduser[i].username}"`));
 			var username_td = document.createElement('td');
@@ -227,7 +243,10 @@ function restoreOptions() {
 			var timestamp_td = document.createElement('td');
 			timestamp_td.classList.add("block");
 			timestamp_td.classList.add("timestamp");
-			timestamp_td.innerText = escapeHTML(new Date(daumcafe_blockeduser[i].timestamp).toLocaleString());
+			if (toLocaleStringSupportsLocales() && language !== null && language !== undefined)
+				timestamp_td.innerText = escapeHTML(new Date(daumcafe_blockeduser[i].timestamp).toLocaleString(language, { hour12: false }));
+			else
+				timestamp_td.innerText = escapeHTML(new Date(daumcafe_blockeduser[i].timestamp).toLocaleString());
 
 			var reason_td = document.createElement('td');
 			reason_td.classList.add("block");
