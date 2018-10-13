@@ -22,7 +22,19 @@ td.memo {
 	width: 36%;
 }
 
-td.timestamp {
+td.block.username {
+	width: 20%;
+}
+
+td.block.enc_userid {
+	width: 15%;
+}
+
+td.block.timestamp {
+	width: 25%;
+}
+
+td.block.reason {
 	width: 36%;
 }
 

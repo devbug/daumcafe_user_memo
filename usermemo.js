@@ -505,9 +505,14 @@ function notifyExtension(e) {
 				}
 				// 차단되지 않은 상태이면서, 필터링한 리스트와 본래 리스트의 길이가 같다면,
 				else if (blocks.length === daumcafe_blockeduser.length) {
+					var reason = prompt("차단 사유를 입력하세요.");
+					if (reason === null || reason === undefined)
+						reason = '';
+
 					daumcafe_blockeduser.push({
 						'encuserid': target.attributes['encuserid'].value,
 						'username': target.attributes['username'].value,
+						'reason': reason,
 						'timestamp': + new Date()
 					});
 					chrome.storage.sync.set({ "daumcafe_blockeduser": daumcafe_blockeduser }, onBlockSave);

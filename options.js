@@ -215,18 +215,27 @@ function restoreOptions() {
 		for (i = 0; i < daumcafe_blockeduser.length; i++) {
 			var username = decodeURIComponent(JSON.parse(`"${daumcafe_blockeduser[i].username}"`));
 			var username_td = document.createElement('td');
+			username_td.classList.add("block");
 			username_td.classList.add("username");
 			username_td.innerText = escapeHTML(username);
 
 			var enc_userid_td = document.createElement('td');
+			enc_userid_td.classList.add("block");
 			enc_userid_td.classList.add("enc_userid");
 			enc_userid_td.innerText = escapeHTML(daumcafe_blockeduser[i].encuserid);
 
 			var timestamp_td = document.createElement('td');
+			timestamp_td.classList.add("block");
 			timestamp_td.classList.add("timestamp");
 			timestamp_td.innerText = escapeHTML(new Date(parseInt(daumcafe_blockeduser[i].timestamp)).toUTCString());
 
+			var reason_td = document.createElement('td');
+			reason_td.classList.add("block");
+			reason_td.classList.add("reason");
+			reason_td.innerText = escapeHTML(daumcafe_blockeduser[i].reason);
+
 			var delete_button_input = document.createElement('button');
+			delete_button_input.classList.add("block");
 			delete_button_input.classList.add("delete_button");
 			delete_button_input.setAttribute("encuserid", escapeHTML(daumcafe_blockeduser[i].encuserid));
 			delete_button_input.setAttribute("itemtype", "block");
@@ -238,6 +247,7 @@ function restoreOptions() {
 			tr.appendChild(username_td);
 			tr.appendChild(enc_userid_td);
 			tr.appendChild(timestamp_td);
+			tr.appendChild(reason_td);
 			tr.appendChild(delete_button_td);
 
 			tbody.appendChild(tr);
