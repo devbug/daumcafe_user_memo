@@ -22,6 +22,10 @@ td.memo {
 	width: 36%;
 }
 
+td.timestamp {
+	width: 36%;
+}
+
 input {
 	width: 100%;
 }

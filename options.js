@@ -68,34 +68,57 @@ function removeButtonOnClick(e) {
 		return;
 
 	var target = e.target;
-	while ((target.tagName != "BUTTON" || !target.hasAttribute('encuserid')) && target.parentNode) {
+	while ((target.tagName != "BUTTON" || !target.hasAttribute('encuserid') || !target.hasAttribute("itemtype")) && target.parentNode) {
 		target = target.parentNode;
 	}
 	if (target.tagName != "BUTTON")
 		return;
 
-	var remove = confirm('정말 메모를 삭제하시겠습니까?');
-	if (remove) {
-		function onSave(result) {
-			restoreOptions();
-		}
+	function onSave(result) {
+		restoreOptions();
+	}
 
-		chrome.storage.sync.get(["daumcafe_usermemo"], result => {
-			var memos;
-			if (result instanceof Array) {
-				memos = result[0];
-			}
-			else {
-				memos = result.daumcafe_usermemo;
-			}
-			if (!memos)
-				memos = [];
+	if (target.attributes['itemtype'].value === 'memo') {
+		var remove = confirm('정말 메모를 삭제하시겠습니까?');
+		if (remove) {
+			chrome.storage.sync.get(["daumcafe_usermemo"], result => {
+				var memos;
+				if (result instanceof Array) {
+					memos = result[0];
+				}
+				else {
+					memos = result.daumcafe_usermemo;
+				}
+				if (!memos)
+					memos = [];
 
-			var daumcafe_usermemo = memos.filter(item => {
-				return item.encuserid !== target.attributes['encuserid'].value;
+				var daumcafe_usermemo = memos.filter(item => {
+					return item.encuserid !== target.attributes['encuserid'].value;
+				});
+				chrome.storage.sync.set({ "daumcafe_usermemo": daumcafe_usermemo }, onSave);
 			});
-			chrome.storage.sync.set({ "daumcafe_usermemo": daumcafe_usermemo }, onSave);
-		});
+		}
+	}
+	else if (target.attributes['itemtype'].value === 'block') {
+		var remove = confirm('정말 차단 항목을 삭제하시겠습니까?');
+		if (remove) {
+			chrome.storage.sync.get(["daumcafe_blockeduser"], result => {
+				var memos;
+				if (result instanceof Array) {
+					memos = result[0];
+				}
+				else {
+					memos = result.daumcafe_blockeduser;
+				}
+				if (!memos)
+					memos = [];
+
+				var daumcafe_blockeduser = memos.filter(item => {
+					return item.encuserid !== target.attributes['encuserid'].value;
+				});
+				chrome.storage.sync.set({ "daumcafe_blockeduser": daumcafe_blockeduser }, onSave);
+			});
+		}
 	}
 }
 
@@ -105,7 +128,7 @@ function escapeHTML(str) {
 
 function restoreOptions() {
 
-	function onGot(result) {
+	function onMemosGot(result) {
 		var daumcafe_usermemo;
 		if (result instanceof Array) {
 			daumcafe_usermemo = result[0];
@@ -117,7 +140,6 @@ function restoreOptions() {
 			daumcafe_usermemo = [];
 
 		var i;
-		var html = "";
 		var tbody = document.querySelector("#user_memos");
 		while (tbody.firstChild) {
 			tbody.removeChild(tbody.firstChild);
@@ -156,8 +178,9 @@ function restoreOptions() {
 			memo_td.appendChild(memo_input);
 
 			var delete_button_input = document.createElement('button');
-			delete_button_input.id = "delete_button";
+			delete_button_input.classList.add("delete_button");
 			delete_button_input.setAttribute("encuserid", escapeHTML(daumcafe_usermemo[i].encuserid));
+			delete_button_input.setAttribute("itemtype", "memo");
 			delete_button_input.innerText = "X";
 			var delete_button_td = document.createElement('td');
 			delete_button_td.appendChild(delete_button_input);
@@ -172,7 +195,57 @@ function restoreOptions() {
 		}
 	}
 
-	chrome.storage.sync.get(["daumcafe_usermemo"], onGot);
+	function onBlocksGot(result) {
+		var daumcafe_blockeduser;
+		if (result instanceof Array) {
+			daumcafe_blockeduser = result[0];
+		}
+		else {
+			daumcafe_blockeduser = result.daumcafe_blockeduser;
+		}
+		if (!daumcafe_blockeduser)
+			daumcafe_blockeduser = []
+
+		var i;
+		var tbody = document.querySelector("#user_blocks");
+		while (tbody.firstChild) {
+			tbody.removeChild(tbody.firstChild);
+		}
+
+		for (i = 0; i < daumcafe_blockeduser.length; i++) {
+			var username = decodeURIComponent(JSON.parse(`"${daumcafe_blockeduser[i].username}"`));
+			var username_td = document.createElement('td');
+			username_td.classList.add("username");
+			username_td.innerText = escapeHTML(username);
+
+			var enc_userid_td = document.createElement('td');
+			enc_userid_td.classList.add("enc_userid");
+			enc_userid_td.innerText = escapeHTML(daumcafe_blockeduser[i].encuserid);
+
+			var timestamp_td = document.createElement('td');
+			timestamp_td.classList.add("timestamp");
+			timestamp_td.innerText = escapeHTML(new Date(parseInt(daumcafe_blockeduser[i].timestamp)).toUTCString());
+
+			var delete_button_input = document.createElement('button');
+			delete_button_input.classList.add("delete_button");
+			delete_button_input.setAttribute("encuserid", escapeHTML(daumcafe_blockeduser[i].encuserid));
+			delete_button_input.setAttribute("itemtype", "block");
+			delete_button_input.innerText = "X";
+			var delete_button_td = document.createElement('td');
+			delete_button_td.appendChild(delete_button_input);
+
+			var tr = document.createElement('tr');
+			tr.appendChild(username_td);
+			tr.appendChild(enc_userid_td);
+			tr.appendChild(timestamp_td);
+			tr.appendChild(delete_button_td);
+
+			tbody.appendChild(tr);
+		}
+	}
+
+	chrome.storage.sync.get(["daumcafe_usermemo"], onMemosGot);
+	chrome.storage.sync.get(["daumcafe_blockeduser"], onBlocksGot);
 }
 
 document.addEventListener("DOMContentLoaded", restoreOptions);

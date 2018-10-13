@@ -8,7 +8,20 @@
 	</head>
 
 	<body>
+		<h2>차단 리스트</h2>
+		<table>
+			<thead>
+				<th>등록 시 사용자 명</th>
+				<th>encUserID</th>
+				<th>차단 일시</th>
+				<th>삭제</th>
+			</thead>
+			<tbody id="user_blocks">
+			</tbody>
+		</table>
+		<br />
 		<form>
+			<h2>메모 리스트</h2>
 			<table>
 				<thead>
 					<th>등록 시 사용자 명</th>
@@ -18,10 +31,10 @@
 				</thead>
 				<tbody id="user_memos">
 				</tbody>
-				<script src="options.js"></script>
 			</table>
 			<br />
 			<button id="submit" type="submit">저장</button>
 		</form>
+		<script src="options.js"></script>
 	</body>
 </html>
