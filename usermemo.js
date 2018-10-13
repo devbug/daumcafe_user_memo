@@ -48,6 +48,8 @@ function onGot(result) {
 			insert_a.setAttribute("insert", "true");
 			insert_a.setAttribute("onclick", "return false;");
 			insert_a.href = "#";
+			insert_a.style.fontSize = "11px";
+			insert_a.style.color = "#aa22ff";
 			insert_a.style.marginLeft = "5px";
 			insert_a.innerText = "[+]";
 
@@ -68,6 +70,8 @@ function onGot(result) {
 				delete_a.setAttribute("delete", "true");
 				delete_a.setAttribute("onclick", "return false;");
 				delete_a.href = "#";
+				delete_a.style.fontSize = "11px";
+				delete_a.style.color = "#aa22ff";
 				delete_a.innerText = "[-]";
 				newMemo.appendChild(br);
 				newMemo.appendChild(memo_span);
@@ -108,6 +112,8 @@ function onGot(result) {
 				delete_a.setAttribute("delete", "true");
 				delete_a.setAttribute("onclick", "return false;");
 				delete_a.href = "#";
+				delete_a.style.fontSize = "11px";
+				delete_a.style.color = "#aa22ff";
 				delete_a.style.marginLeft = "5px";
 				delete_a.innerText = "[-]";
 				aggro_memo.appendChild(memo_span);
@@ -124,6 +130,8 @@ function onGot(result) {
 			insert_a.setAttribute("insert", "true");
 			insert_a.setAttribute("onclick", "return false;");
 			insert_a.href = "#";
+			insert_a.style.fontSize = "11px";
+			insert_a.style.color = "#aa22ff";
 			insert_a.style.marginLeft = "5px";
 			insert_a.innerText = "[+]";
 
@@ -161,6 +169,8 @@ function onGot(result) {
 			insert_a.setAttribute("insert", "true");
 			insert_a.setAttribute("onclick", "return false;");
 			insert_a.href = "#";
+			insert_a.style.fontSize = "11px";
+			insert_a.style.color = "#aa22ff";
 			insert_a.innerText = "[+]";
 
 			var newMemo = document.createElement("SPAN");
@@ -180,6 +190,8 @@ function onGot(result) {
 				delete_a.setAttribute("delete", "true");
 				delete_a.setAttribute("onclick", "return false;");
 				delete_a.href = "#";
+				delete_a.style.fontSize = "11px";
+				delete_a.style.color = "#aa22ff";
 				delete_a.innerText = "[-]";
 				newMemo.appendChild(memo_span);
 				newMemo.appendChild(delete_a);
@@ -227,6 +239,8 @@ function onGot(result) {
 			insert_a.setAttribute("insert", "true");
 			insert_a.setAttribute("onclick", "return false;");
 			insert_a.href = "#";
+			insert_a.style.fontSize = "11px";
+			insert_a.style.color = "#aa22ff";
 			insert_a.innerText = "[+]";
 
 			var newMemo = document.createElement("SPAN");
@@ -246,6 +260,8 @@ function onGot(result) {
 				delete_a.setAttribute("delete", "true");
 				delete_a.setAttribute("onclick", "return false;");
 				delete_a.href = "#";
+				delete_a.style.fontSize = "11px";
+				delete_a.style.color = "#aa22ff";
 				delete_a.innerText = "[-]";
 				newMemo.appendChild(memo_span);
 				newMemo.appendChild(delete_a);
