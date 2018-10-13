@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 	"version": "0.4",
 	"name": "다음카페 사용자 메모",
-	"description": "IZ*ONE 공식 팬카페 어그로 판별을 위한 사용자 메모 기능 추가",
+	"description": "IZ*ONE 공식 팬카페 어그로 식별을 위한 사용자 메모 및 사용자 차단 기능 추가",
 	"applications": {
 		"gecko": {
 			"id": "{19668660-CEF9-11E8-AB22-595CA659E189}"
