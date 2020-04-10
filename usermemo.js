@@ -2,6 +2,12 @@ function escapeHTML(str) {
 	return str.replace(/[&"'<>]/g, (m) => ({ "&": "&amp;", '"': "&quot;", "'": "&#39;", "<": "&lt;", ">": "&gt;" })[m]);
 }
 
+function decodeHtml(html) {
+	var txt = document.createElement("textarea");
+	txt.innerHTML = html;
+	return txt.value;
+}
+
 function onMemosGot(result) {
 	var daumcafe_usermemo;
 	if (result instanceof Array) {
@@ -302,7 +308,7 @@ function onBlocksGot(result) {
 	var article_list = document.querySelectorAll("#article-list > tr");
 	for (i = 0; i < articles.length; i++) {
 		var enc_userid = articles[i]['encUserId'];
-		var username = articles[i]['author'];
+		var username = decodeHtml(articles[i]['author']);
 		var blocks = daumcafe_blockeduser.filter(item => {
 			return item.encuserid === enc_userid;
 		});
@@ -331,7 +337,7 @@ function onBlocksGot(result) {
 	var article_writers = document.querySelectorAll('div.cover_info > a');
 	for (i = 0; i < article_writers.length; i++) {
 		var enc_userid = article_writers[i].getAttribute('data-enc-userid');
-		var username = article_writers[i].getAttribute('data-nickname');
+		var username = decodeHtml(article_writers[i].getAttribute('data-nickname'));
 		var blocks = daumcafe_blockeduser.filter(item => {
 			return item.encuserid === enc_userid;
 		});
@@ -359,7 +365,7 @@ function onBlocksGot(result) {
 	var replies = document.querySelectorAll('#comment_view > ul.list_comment > li');
 	for (i = 0; i < replies.length; i++) {
 		var enc_userid = replies[i].getAttribute('data-userid');
-		var username = replies[i].getAttribute('data-nickname');
+		var username = decodeHtml(replies[i].getAttribute('data-nickname'));
 		var blocks = daumcafe_blockeduser.filter(item => {
 			return item.encuserid === enc_userid;
 		});
