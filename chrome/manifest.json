@@ -1,6 +1,6 @@
 {
 	"manifest_version": 2,
-	"version": "0.4",
+	"version": "0.6",
 	"name": "다음카페 사용자 메모",
 	"description": "IZ*ONE 공식 팬카페 어그로 식별을 위한 사용자 메모 및 사용자 차단 기능 추가",
 
