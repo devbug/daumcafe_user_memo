@@ -200,6 +200,74 @@ function onMemosGot(result) {
 		reply_names[i].parentNode.appendChild(newMemo);
 	}
 
+	// 더 보기 글 목록
+	var more_article_list = document.getElementById('more-article-list');
+	if (more_article_list !== undefined && moreMenuContainer !== null) {
+		var _url = new URL(more_article_list.baseURI);
+		var CAFEAPP = {};
+		eval(document.head.innerHTML.match(/CAFEAPP.ui\s*=\s*\{((.|\n)*?)\};/g)[0]);
+		var url = `${_url.protocol}//${_url.hostname}/_c21_/bottom/articles?grpid=${_url.searchParams.get('grpid')}&fldid=${CAFEAPP.ui.FLDID}&contentval=${CAFEAPP.ui.PARBBSDEPTH}`;
+		var request = new XMLHttpRequest();
+		request.open("GET", url, true);
+		request.onload = function () {
+			var jsonResponse = JSON.parse(request.responseText);
+			var articles = jsonResponse['articles'];
+
+			var nicknames = document.querySelectorAll("#more-article-list > tr > td.td_writer");
+			for (i = 0; i < nicknames.length; i++) {
+				var memo = daumcafe_usermemo.filter(item => {
+					return item.encuserid === articles[i]['encUserid'];
+				});
+				var enc_userid = articles[i]['encUserid'];
+				var username = articles[i]['nickname'];
+				var memo_str = "";
+				if (memo && memo.length > 0) {
+					memo_str = escapeHTML(memo[0].memo);
+				}
+
+				var insert_a = document.createElement("a");
+				insert_a.setAttribute("encuserid", enc_userid);
+				insert_a.setAttribute("username", username);
+				insert_a.setAttribute("memo", memo_str);
+				insert_a.setAttribute("insert", "true");
+				insert_a.setAttribute("onclick", "return false;");
+				insert_a.href = "#";
+				insert_a.style.fontSize = "11px";
+				insert_a.style.color = "#aa22ff";
+				// insert_a.style.marginLeft = "5px";
+				insert_a.innerText = "[+]";
+
+				var newMemo = document.createElement("SPAN");
+				newMemo.classList.add("aggro_memo");
+				newMemo.style.fontSize = "11px";
+				newMemo.style.color = "#aa22ff";
+				newMemo.appendChild(insert_a);
+
+				if (memo_str !== "") {
+					var br = document.createElement("br");
+					var memo_span = document.createElement("span");
+					memo_span.innerText = `${memo_str} `;
+					var delete_a = document.createElement("a");
+					delete_a.setAttribute("encuserid", enc_userid);
+					delete_a.setAttribute("username", username);
+					delete_a.setAttribute("memo", memo_str);
+					delete_a.setAttribute("delete", "true");
+					delete_a.setAttribute("onclick", "return false;");
+					delete_a.href = "#";
+					delete_a.style.fontSize = "11px";
+					delete_a.style.color = "#aa22ff";
+					delete_a.innerText = "[-]";
+					newMemo.appendChild(br);
+					newMemo.appendChild(memo_span);
+					newMemo.appendChild(delete_a);
+				}
+
+				nicknames[i].appendChild(newMemo);
+			}
+		};
+		request.send();
+	}
+
 	// 작성 글 보기
 	var member_form = document.getElementsByClassName("member_article_search_form");
 	for (i = 0; i < member_form.length; i++) {
@@ -296,7 +364,7 @@ function onBlocksGot(result) {
 		block_items[0].parentNode.removeChild(block_items[0]);
 	}
 
-	var i, j;
+	var i;
 
 	var articles = [];
 	var articles_re = /articles.push\(\{((.|\n)*?)\}\);/g;
@@ -388,6 +456,50 @@ function onBlocksGot(result) {
 			}
 		}
 		catch {}
+	}
+
+	// 더 보기 글 목록
+	var more_article_list = document.getElementById('more-article-list');
+	if (more_article_list !== undefined && moreMenuContainer !== null) {
+		var _url = new URL(more_article_list.baseURI);
+		var CAFEAPP = {};
+		eval(document.head.innerHTML.match(/CAFEAPP.ui\s*=\s*\{((.|\n)*?)\};/g)[0]);
+		var url = `${_url.protocol}//${_url.hostname}/_c21_/bottom/articles?grpid=${_url.searchParams.get('grpid')}&fldid=${CAFEAPP.ui.FLDID}&contentval=${CAFEAPP.ui.PARBBSDEPTH}`;
+		var request = new XMLHttpRequest();
+		request.open("GET", url, true);
+		request.onload = function () {
+			var jsonResponse = JSON.parse(request.responseText);
+			var articles = jsonResponse['articles'];
+
+			var article_list = document.querySelectorAll("#more-article-list > tr");
+			for (i = 0; i < articles.length; i++) {
+				var enc_userid = articles[i]['encUserid'];
+				var username = decodeHtml(articles[i]['nickname']);
+				var blocks = daumcafe_blockeduser.filter(item => {
+					return item.encuserid === enc_userid;
+				});
+		
+				var blocked_status = blocks.length > 0 ? true : false;
+				try {
+					var txt_writer = article_list[i].getElementsByClassName('txt_writer')[0];
+					txt_writer.innerText = blocked_status ? '차단된 사용자' : username;
+					txt_writer.style.color = blocked_status ? "#ee2222" : null;
+		
+					var title_wrapper = article_list[i].getElementsByClassName('title_wrapper')[0];
+					title_wrapper.style.display = blocked_status ? "none" : null;
+		
+					if (blocked_status) {
+						var blocked_msg = document.createElement('span');
+						blocked_msg.classList.add('aggro_blocks');
+						blocked_msg.style.color = "#ee2222";
+						blocked_msg.innerText = '차단된 글입니다.';
+						title_wrapper.parentNode.appendChild(blocked_msg);
+					}
+				}
+				catch {}
+			}
+		};
+		request.send();
 	}
 }
 
